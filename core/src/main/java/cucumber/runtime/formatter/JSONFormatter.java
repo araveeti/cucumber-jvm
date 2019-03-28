@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 final class JSONFormatter implements EventListener {
     private String currentFeatureFile;
     private List<Map<String, Object>> featureMaps = new ArrayList<Map<String, Object>>();
@@ -382,14 +384,14 @@ final class JSONFormatter implements EventListener {
         if (result.getErrorMessage() != null) {
             resultMap.put("error_message", result.getErrorMessage());
         }
-        if (result.getDuration() != null && result.getDuration() != 0) {
-            resultMap.put("duration", result.getDuration());
+        if (result.getDuration() != 0) {
+            resultMap.put("duration", MILLISECONDS.toNanos(result.getDuration()));
         }
         return resultMap;
     }
     
     private String getDateTimeFromTimeStamp(long timeStampMillis) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         
         return sdf.format(new Date(timeStampMillis));

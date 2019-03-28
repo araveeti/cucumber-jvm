@@ -365,8 +365,8 @@ public final class TestNGFormatterTest {
         return new Scanner(new FileInputStream(tempFile), "UTF-8").useDelimiter("\\A").next();
     }
 
-    private Long milliSeconds(int milliSeconds) {
-        return milliSeconds * 1000000L;
+    private long milliSeconds(int milliSeconds) {
+        return milliSeconds;
     }
 
     private static class TestNGException extends Exception {

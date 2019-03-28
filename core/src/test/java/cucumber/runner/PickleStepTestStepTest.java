@@ -92,7 +92,6 @@ public class PickleStepTestStepTest {
         assertEquals(SKIPPED, scenario.getStatus());
     }
 
-
     @Test
     public void result_is_skipped_when_before_step_hook_does_not_pass() throws Throwable {
         doThrow(AssumptionViolatedException.class).when(beforeHookDefinition).execute(any(cucumber.api.Scenario.class));
@@ -137,6 +136,7 @@ public class PickleStepTestStepTest {
         List<TestCaseEvent> allValues = captor.getAllValues();
         assertEquals(failure, ((TestStepFinished) allValues.get(3)).result);
     }
+
     @Test
     public void result_is_result_from_hook_when_after_step_hook_does_not_pass() throws Throwable {
         Exception exception = new RuntimeException();
@@ -151,6 +151,7 @@ public class PickleStepTestStepTest {
         List<TestCaseEvent> allValues = captor.getAllValues();
         assertEquals(failure, ((TestStepFinished) allValues.get(5)).result);
     }
+
     @Test
     public void after_step_hook_is_run_when_before_step_hook_does_not_pass() throws Throwable {
         doThrow(RuntimeException.class).when(beforeHookDefinition).execute(any(cucumber.api.Scenario.class));
@@ -171,7 +172,7 @@ public class PickleStepTestStepTest {
         doThrow(expectedError).when(definitionMatch).runStep(any(Scenario.class));
         doThrow(new Exception()).when(afterHookDefinition).execute(argThat(scenarioDoesNotHave(expectedError)));
         step.run(testCase, bus, scenario, false);
-        assertThat(scenario.getError(),is(expectedError));
+        assertThat(scenario.getError(), is(expectedError));
     }
 
     @Test
@@ -180,7 +181,7 @@ public class PickleStepTestStepTest {
         doThrow(expectedError).when(beforeHookDefinition).execute(any(Scenario.class));
         doThrow(new Exception()).when(afterHookDefinition).execute(argThat(scenarioDoesNotHave(expectedError)));
         step.run(testCase, bus, scenario, false);
-        assertThat(scenario.getError(),is(expectedError));
+        assertThat(scenario.getError(), is(expectedError));
     }
 
     private static ArgumentMatcher<Scenario> scenarioDoesNotHave(final Throwable type) {
@@ -225,7 +226,7 @@ public class PickleStepTestStepTest {
     @Test
     public void step_execution_time_is_measured() {
         TestStep step = new PickleStepTestStep("uri", mock(PickleStep.class), definitionMatch);
-        when(bus.getTime()).thenReturn(234L, (Long) 1234L);
+        when(bus.getTimeMillis()).thenReturn(234L, 1234L);
         step.run(testCase, bus, scenario, false);
 
         ArgumentCaptor<TestCaseEvent> captor = forClass(TestCaseEvent.class);
@@ -235,8 +236,8 @@ public class PickleStepTestStepTest {
         TestStepStarted started = (TestStepStarted) allValues.get(0);
         TestStepFinished finished = (TestStepFinished) allValues.get(1);
 
-        assertEquals((Long) 234L, started.getTimeStamp());
-        assertEquals((Long) 1234L, finished.getTimeStamp());
+        assertEquals(234L, started.getTimeStampMillis());
+        assertEquals(1234L, finished.getTimeStampMillis());
         assertEquals((Long) 1000L, finished.result.getDuration());
     }
 

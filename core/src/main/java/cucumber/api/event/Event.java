@@ -30,6 +30,21 @@ public interface Event {
      */
     Comparator<Event> CANONICAL_ORDER = new CanonicalEventOrder();
 
+    /**
+     * Returns a timestamp in nano seconds.
+     *
+     * @return timestamp in nano seconds
+     * @see System#nanoTime()
+     */
+    @Deprecated
     Long getTimeStamp();
+
+    /**
+     * Returns a timestamp in miliseconds since the epoch.
+     *
+     * @return timestamp in milli seconds
+     * @see System#currentTimeMillis()
+     */
+    long getTimeStampMillis();
 
 }

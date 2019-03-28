@@ -280,12 +280,12 @@ final class TestNGFormatter implements EventListener, StrictAware {
         private String calculateTotalDurationString() {
             long totalDurationNanos = 0;
             for (Result r : results) {
-                totalDurationNanos += r.getDuration() == null ? 0 : r.getDuration();
+                totalDurationNanos += r.getDuration();
             }
             for (Result r : hooks) {
-                totalDurationNanos += r.getDuration() == null ? 0 : r.getDuration();
+                totalDurationNanos += r.getDuration();
             }
-            return String.valueOf(totalDurationNanos / 1000000);
+            return String.valueOf(totalDurationNanos);
         }
 
         private void addStepAndResultListing(StringBuilder sb) {

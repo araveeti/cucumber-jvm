@@ -42,7 +42,8 @@ abstract class TestStep implements cucumber.api.TestStep {
      */
     boolean run(TestCase testCase, EventBus bus, Scenario scenario, boolean skipSteps) {
         Long startTime = bus.getTime();
-        bus.send(new TestStepStarted(startTime, testCase, this));
+        Long startTimeMillis = bus.getTimeMillis();
+        bus.send(new TestStepStarted(startTime, startTimeMillis, testCase, this));
         Result.Type status;
         Throwable error = null;
         try {
@@ -52,9 +53,10 @@ abstract class TestStep implements cucumber.api.TestStep {
             status = mapThrowableToStatus(t);
         }
         Long stopTime = bus.getTime();
-        Result result = mapStatusToResult(status, error, stopTime - startTime);
+        Long stopTimeMillis = bus.getTimeMillis();
+        Result result = mapStatusToResult(status, error, stopTimeMillis - startTimeMillis);
         scenario.add(result);
-        bus.send(new TestStepFinished(stopTime, testCase, this, result));
+        bus.send(new TestStepFinished(stopTime, stopTimeMillis, testCase, this, result));
         return !result.is(Result.Type.PASSED);
     }
 

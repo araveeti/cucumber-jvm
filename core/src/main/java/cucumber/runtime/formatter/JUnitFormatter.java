@@ -261,7 +261,7 @@ final class JUnitFormatter implements EventListener, StrictAware {
         private String calculateTotalDurationString(Result result) {
             DecimalFormat numberFormat = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
             numberFormat.applyPattern("0.######");
-            return numberFormat.format(((double) result.getDuration()) / 1000000000);
+            return numberFormat.format(((double) result.getDuration()) / 1000);
         }
 
         private void addStepAndResultListing(StringBuilder sb) {
